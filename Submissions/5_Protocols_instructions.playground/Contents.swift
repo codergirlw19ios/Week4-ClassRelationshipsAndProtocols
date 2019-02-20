@@ -11,20 +11,21 @@ enum ConsumptionClassification {
 //: ## PROTOCOLS
 //: 1.) add `kibble` as a case
 enum Food: CaseIterable {
-    case chicken, chocolate, lettuce
+    case chicken, chocolate, lettuce, kibble
     
     var consumptionType: ConsumptionClassification {
         switch self {
         case .chicken: return .carnivore
         case .chocolate: return .herbivore
         case .lettuce: return .herbivore
+        case .kibble: return  .herbivore
         }
     }
 }
 
 //: 2.) change the enum to be of type `Int`
-enum Health {
-    case dead, ill, poor, well, healthy
+enum Health : Int {
+    case dead=1, ill, poor, well, healthy
     
     var decreasedHealth: Health? {
         switch self {
@@ -48,7 +49,7 @@ enum Health {
 
 //: 3.) add the `pet` case to the enum
 enum FamilyMember {
-    case parent, child, sibling
+    case parent, child, sibling, pet
 }
 
 class Mammal {
@@ -76,14 +77,40 @@ animal.consume(.chicken)
 //: - Write a function called `beg` that takes no parameters and returns no parameters.
 //: - Write a function called `consume` that takes a `Food` parameter with no argument label.
 //: - Write a read-only `Human` type var called `owner`.
-
+protocol Pet: AnyObject {
+    func beg()
+    func consume(_ : Food)
+    var owner: Human {get}
+}
 
 //: 5.) Write a subclass of `Mammal` called `Dog`, that adheres to the `Pet` protocol
 //: - Write an initializer that takes in an `owner` parameter.
 //: - Write the `beg` function that calls a `feedPet` function on the `owner`. the `feedPet` takes a `Pet` parameter with no argument label, so pass `self`.
 //: - Override the `health` variable to call `beg` in the `didSet` propertyObserver when `health` is less than `healthy` (except for .dead!)
 //: - Override the `consume` function to be able to eat anything (`increaseHealth`) except .chocolate (`decreaseHealth`).
-
+class Dog: Mammal, Pet {
+    var owner: Human
+    init(owner: Human) {
+        self.owner = owner
+        super.init()
+    }
+    
+    func beg() {
+        owner.feedPet(self)
+    }
+    override var health: Health {
+        didSet {
+            if (!(health.rawValue == 1) && (health.rawValue < 4)) {
+                beg()
+            }
+        }
+    }
+    override func consume(_ food: Food){
+        guard let health = consumptionClassification.canEat(food) && food != .chocolate ? health.increasedHealth: health.decreasedHealth else { return }
+        self.health = health
+    }
+    
+}
 
 //: 6.) Write a function called `feedPet` that takes a `Pet` parameter with no external argument label.
 //: - Switch on `pet`. Typecast `pet` to `Dog` in a case; if it is a `Dog`, feed it `.kibble`. Otherwise feed the `pet` `.chocolate`.
@@ -128,6 +155,12 @@ class Human: Mammal {
             }
         }
     }
+    func feedPet(_ pet: Pet) {
+        switch (pet) {
+        case let dog where dog is Dog: pet.consume(.kibble)
+        default: pet.consume(.chocolate)
+        }
+    }
 }
 
 let amanda = Human(allergies: [.chocolate])
@@ -153,6 +186,12 @@ class Adult: Human {
         self[.child] = [child]
         child[.parent] = [self]
         return child
+    }
+    
+    func adoptDog() -> Dog {
+        let dog = Dog(owner: self)
+        self[.pet] = [dog]
+        return dog
     }
 }
 
@@ -216,6 +255,9 @@ if let child = children.first {
 
 //: 8.) Create a constant named `dog` and let `abby` adopt a dog.
 //: - Set the `dog`'s `health` to `.well`
+let dog = abby.adoptDog()
+dog.health = .well
+
 protocol ExampleProtocol {
     var simpleDescription: String {get}
     mutating func adjust()
