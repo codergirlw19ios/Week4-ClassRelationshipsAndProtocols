@@ -250,21 +250,25 @@ dog.health = .well
 //: 2.) Write an `extension` on the `Int` struct that will allow you simplify the use case of initializing an `Int` from a `Character` (default Swift implementation is Int(String(Character) as we discussed in class). The function will take a `Character` parameter and return an optional `Int`.
 
 extension Int {
-    init(_ char: Character) {
-        if(let intVal = Int(String(char)) != nil) {
-            self = intVal
-        }
+    func create(_ char: Character) -> Int? {
+        print("hello")
+        guard let intVal = Int(String(char)) else { return nil }
+        return intVal
     }
-}
-
-extension Double {
-    var km: Double { return self * 1_000.0 }
-    var m: Double { return self }
-    var cm: Double { return self / 100.0 }
-    var mm: Double { return self / 1_000.0 }
-    var ft: Double { return self / 3.28084 }
 }
 
 //: 3.) Now use your new init function.
 
+var char:Character = "3"
+var int: Int = 0
+int = int.create(char)!
+print(int)
+
 //: 4.) Write an extension on the `Dog` class that has a computed variable of an optional `Human` type named `bestFriend`. The return value is the `owner`'s first `.child`.
+
+extension Dog {
+    var bestFriend: Human? { return  owner[.child].first as? Human}
+}
+
+var temp: Human = dog.bestFriend!
+
