@@ -45,7 +45,10 @@ enum Health {
 
 //: ## SUBSCRIPT
 //: 1.) Write an enum called `FamilyMember` with a few family members as cases: such as `parent`, `child`, `sibling`
-
+enum FamilyMember
+{
+    case parent, child, sibling
+}
 class Mammal {
     let consumptionClassification: ConsumptionClassification
     var health: Health = .healthy
@@ -71,7 +74,23 @@ animal.consume(.chicken)
 
 class Human: Mammal {
     var allergies: [Food]
-    
+    private var family = [FamilyMember: [Human]]()
+    subscript(_ familyMember: FamilyMember) -> [Human] {
+        get{
+            return family[familyMember] ?? []
+        }
+        set(newFamily){
+            family[familyMember]  = family[familyMember] != nil ? family[familyMember]! + newFamily : newFamily
+            /*if let currentFamily = family[familyMember]
+            {
+                family[familyMember] = currentFamily + newFamily
+            }
+            else
+            {
+                family[familyMember] = newFamily
+            }*/
+        }
+    }
     init(allergies: [Food], consumptionClassification: ConsumptionClassification = .omnivore){
         self.allergies = allergies
         super.init(consumptionClassification: consumptionClassification)
@@ -111,6 +130,18 @@ let sarah = Human(vegetarian: true)
 //: 3.) Create a subclass of `Human` called `Adult` that cannot be subclassed.
 //: - Create a function called `addChild` that will initialize a `Child` instance with no `dislikedFoods` or `allergies`, add the `Child` to the `Adult`'s dictionary as a `.child` and add the `Adult` to the `Child`'s dictionary as a `.parent`. If there are already children, make sure each `.child` is added to each other's dictionary as a `.sibling`.
 
+class Adult: Human{
+    func addChild() -> Child{
+        let child = Child(dislikedFoods:[], allergies: [])
+        self[.child].forEach{sibling in
+            sibling[.sibling] = [child]
+        }
+        child[.sibling] = self[.child]
+        self[.child] = [child]
+        child[.parent] = [self]
+        return child
+    }
+}
 
 class Child: Human {
     var dislikedFoods: [Food]
@@ -153,8 +184,14 @@ tommy.consume(.lettuce)
 //: - Give her a Child named `hayden`
 //: - Check that `abby`'s first `.child`'s first `.parent` is deeply equal to `abby`. (they are the same object in memory)
 
+let abby = Adult(allergies: [])
+let hayden = abby.addChild()
+abby[.child].first?[.parent].first === abby
 
 //: 5.) give abby another child named `vivian`
 //: - Check that abby now has two children and `hayden` now has a `.sibling`
 
 
+let vivian = abby.addChild()
+abby[.child].count
+hayden[.sibling].count

@@ -89,16 +89,14 @@ protocol Pet: class {
 //: ## Extensions
 //: 1.) Move the conformance to `Pet` into an `extension`
 //: - Note you cannot have stored properties in extensions
-class Dog: Mammal, Pet {
+class Dog: Mammal{
     var owner: Human
     
     init(owner: Human){
         self.owner = owner
     }
     
-    func beg() {
-        owner.feedPet(self)
-    }
+    
     
     override var health: Health {
         didSet {
@@ -114,6 +112,13 @@ class Dog: Mammal, Pet {
         guard let health = consumptionClassification.canEat(food) && food != .chocolate ? health.increasedHealth : health.decreasedHealth else { return }
         
         self.health = health
+    }
+    
+}
+extension Dog: Pet{
+    func beg()
+    {
+    owner.feedPet(self)
     }
     
 }
@@ -249,6 +254,17 @@ dog.health = .well
 
 //: 2.) Write an `extension` on the `Int` struct that will allow you simplify the use case of initializing an `Int` from a `Character` (default Swift implementation is Int(String(Character) as we discussed in class). The function will take a `Character` parameter and return an optional `Int`.
 
+extension Int{
+    init?(_ char: Character){
+        self.init(String(char))
+    }
+}
 //: 3.) Now use your new init function.
 
+let char = "0"
+let int = Int(char)
+
 //: 4.) Write an extension on the `Dog` class that has a computed variable of an optional `Human` type named `bestFriend`. The return value is the `owner`'s first `.child`.
+extension Dog{
+    var bestFriend: Human? {return owner[.child].first as? Human}
+}
