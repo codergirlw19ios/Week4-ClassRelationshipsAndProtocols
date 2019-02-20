@@ -112,7 +112,7 @@ debbie.ConsumptionClassification = ConsumptionClassification.herbivore
 
 class Child: Human {
     var dislikedFoods: [Food]
-    var vegetarian: Bool
+    var vegetarian: Bool = false
     
     init(dislikedFoods: [Food], allergies: [Food]){
         self.dislikedFoods = dislikedFoods
@@ -121,7 +121,7 @@ class Child: Human {
     
     init(dislikedFoods: [Food], vegetarian: Bool){
         self.dislikedFoods = dislikedFoods
-        super.init(allergies: [.chicken], consumptionClassification: .herbivore)
+        super.init(allergies: [.chicken])
     }
     
 //    init(dislikedFoods: [Food], allergies: [Food], vegetarian: Bool){
@@ -153,8 +153,8 @@ class Child: Human {
 
 let tommy = Child(dislikedFoods: [.lettuce], allergies: [], vegetarian: false)
 if tommy?.health != nil {
-    tommy.health
-    tommy.consume(.lettuce)
+    tommy!.health
+    tommy!.consume(.lettuce)
 }
 //: ## Deinitialization
 //: We'll cover automatic reference counting next week and deinitialization in more detail with ARC and when we work with views in the coming weeks.

@@ -190,9 +190,10 @@ class Adult: Human {
     
     func adoptDog() -> Dog {
         let dog = Dog(owner: self)
-        self[.pet] = [dog]
+        self[.pet] = dog
         return dog
     }
+    
 }
 
 class Child: Human {
