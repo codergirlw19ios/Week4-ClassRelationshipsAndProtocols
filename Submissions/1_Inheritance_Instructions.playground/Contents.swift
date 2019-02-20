@@ -46,7 +46,7 @@ enum Health {
 class Mammal {
         let ConsumptionClassification: ConsumptionClassification = .omnivore
         var health: Health = .healthy
-
+    
         func consume(food: Food) {
             guard let health = ConsumptionClassification.canEat(food: food) ? health.increasedHealth : health.decreasedHealth else { return }
 
@@ -61,6 +61,12 @@ class Mammal {
 
 class Human: Mammal {
     var allergies: [Food]
+    
+    init(allergies: [Food]){
+        self.allergies = allergies
+        super.init()
+    }
+    
     override init() {
         allergies = []
         super.init()
@@ -93,7 +99,19 @@ amanda.health
 //: - Attempt to override the `health` variable from the `Human` superclass.
 //: Override the `consume` class and ignore `dislikedFoods`. Do not change `health` if that food is passed to the `consume` function. Print "NO!" instead.
 //: Prevent `Child` class from being subclassed using the `final` modifier.
+class Child: Human {
+    var dislikedFoods: [Food]
+    var vegetarian: Bool = false
+    
+    init(dislikedFoods: [Food], allergies: [Food]){
+        self.dislikedFoods = dislikedFoods
+        super.init(allergies: allergies)
+    }
+}
 
 
 //: 6.) Create an instance of the `Child` class called `tommy` and pass an empty array for `allergies` and give a `dislikedFoods` of `.lettuce`.
 //: - Feed tommy `.lettuce`
+var tommy = Child(dislikedFoods: [.lettuce], allergies: [])
+tommy.consume(food: .lettuce)
+
