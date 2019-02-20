@@ -11,19 +11,20 @@ enum ConsumptionClassification {
 //: ## PROTOCOLS
 //: 1.) add `kibble` as a case
 enum Food: CaseIterable {
-    case chicken, chocolate, lettuce
+    case chicken, chocolate, lettuce, kibble
     
     var consumptionType: ConsumptionClassification {
         switch self {
         case .chicken: return .carnivore
         case .chocolate: return .herbivore
         case .lettuce: return .herbivore
+        case .kibble: return .carnivore
         }
     }
 }
 
 //: 2.) change the enum to be of type `Int`
-enum Health {
+enum Health: Int {
     case dead, ill, poor, well, healthy
     
     var decreasedHealth: Health? {
@@ -48,10 +49,20 @@ enum Health {
 
 //: 3.) add the `pet` case to the enum
 enum FamilyMember {
-    case parent, child, sibling
+    case parent, child, sibling, pet
 }
 
 class Mammal {
+    private var family = [FamilyMember: [Mammal]]()
+    
+    subscript(_ familyMember: FamilyMember) -> [Mammal] {
+        get {
+            return family[familyMember] ?? []
+        }
+        set (newFamily){
+            family[familyMember] = family[familyMember] != nil ? family[familyMember]! + newFamily : newFamily
+        }
+    }
     let consumptionClassification: ConsumptionClassification
     var health: Health = .healthy
     
@@ -76,14 +87,44 @@ animal.consume(.chicken)
 //: - Write a function called `beg` that takes no parameters and returns no parameters.
 //: - Write a function called `consume` that takes a `Food` parameter with no argument label.
 //: - Write a read-only `Human` type var called `owner`.
-
+protocol pet: class{
+    func beg()
+    func consume(_ food: Food)
+    var owner: Human{get}
+}
 
 //: 5.) Write a subclass of `Mammal` called `Dog`, that adheres to the `Pet` protocol
 //: - Write an initializer that takes in an `owner` parameter.
 //: - Write the `beg` function that calls a `feedPet` function on the `owner`. the `feedPet` takes a `Pet` parameter with no argument label, so pass `self`.
 //: - Override the `health` variable to call `beg` in the `didSet` propertyObserver when `health` is less than `healthy` (except for .dead!)
 //: - Override the `consume` function to be able to eat anything (`increaseHealth`) except .chocolate (`decreaseHealth`).
-
+class Dog: Mammal, pet{
+    init(owner: Human)
+    {
+        self.owner = owner
+    }
+    func beg() {
+        owner.feedPet(self)
+    }
+    var owner: Human
+    override var health: Health{
+        didSet{
+            print("health of dog: \(health)")
+            if health.rawValue < Health.healthy.rawValue && health != .dead{
+                beg()
+            }
+        }
+    }
+    override func consume(_ food: Food){
+        print("Dog's Consume")
+        guard let health = consumptionClassification.canEat(food) && food != .chocolate ? health.increasedHealth: health.decreasedHealth
+        else
+        {
+            return
+        }
+    }
+    
+}
 
 //: 6.) Write a function called `feedPet` that takes a `Pet` parameter with no external argument label.
 //: - Switch on `pet`. Typecast `pet` to `Dog` in a case; if it is a `Dog`, feed it `.kibble`. Otherwise feed the `pet` `.chocolate`.
@@ -91,7 +132,7 @@ animal.consume(.chicken)
 class Human: Mammal {
     var allergies: [Food]
     
-    private var family = [FamilyMember: [Human]]()
+    /*private var family = [FamilyMember: [Human]]()
     
     subscript(_ familyMember: FamilyMember) -> [Human] {
         get {
@@ -100,7 +141,7 @@ class Human: Mammal {
         set (newFamily){
             family[familyMember] = family[familyMember] != nil ? family[familyMember]! + newFamily : newFamily
         }
-    }
+    }*/
     
     init(allergies: [Food], consumptionClassification: ConsumptionClassification = .omnivore){
         self.allergies = allergies
@@ -128,6 +169,14 @@ class Human: Mammal {
             }
         }
     }
+    func feedPet(_ pet: pet)
+    {
+        switch (pet) {
+        case let dog where dog is Dog: pet.consume(.kibble)
+        default:
+            pet.consume(.chocolate)
+        }
+    }
 }
 
 let amanda = Human(allergies: [.chocolate])
@@ -153,6 +202,11 @@ class Adult: Human {
         self[.child] = [child]
         child[.parent] = [self]
         return child
+    }
+    func  adoptDog() -> Dog {
+        let dog = Dog(owner: self)
+        self[.pet] = [dog]
+        return dog
     }
 }
 
@@ -215,3 +269,5 @@ if let child = children.first {
 
 //: 8.) Create a constant named `dog` and let `abby` adopt a dog.
 //: - Set the `dog`'s `health` to `.well`
+let dog = abby.adoptDog()
+dog.health = .well

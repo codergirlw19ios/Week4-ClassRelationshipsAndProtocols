@@ -3,12 +3,12 @@ import UIKit
 enum ConsumptionClassification {
     case omnivore, carnivore, herbivore
     
-    func canEat(food: Food) -> Bool {
+    func canEat(_ food: Food) -> Bool {
         return self == .omnivore ? true : food.consumptionType == self
     }
 }
 
-enum Food {
+enum Food: CaseIterable{
     case chicken, chocolate, lettuce
     
     var consumptionType: ConsumptionClassification {
@@ -44,20 +44,24 @@ enum Health {
 }
 
 class Mammal {
-    let ConsumptionClassification: ConsumptionClassification = .omnivore
+    var consumptionClassification: ConsumptionClassification
     var health: Health = .healthy
     
-    func consume(food: Food) {
-        guard let health = ConsumptionClassification.canEat(food: food) ? health.increasedHealth : health.decreasedHealth else { return }
+    init(consumptionClassification: ConsumptionClassification = .omnivore)
+    {
+       self.consumptionClassification = consumptionClassification
+    }
+    func consume(_ food: Food) {
+        guard let health = consumptionClassification.canEat(food) ? health.increasedHealth : health.decreasedHealth else { return }
         
         self.health = health
     }
 }
 
 let animal = Mammal()
-animal.ConsumptionClassification
+animal.consumptionClassification
 animal.health
-animal.consume(food: .chicken)
+animal.consume(.chicken)
 
 //: ## Initialization
 //: 1.) Expand the `Human` class:
@@ -72,13 +76,18 @@ animal.consume(food: .chicken)
 class Human: Mammal {
     var allergies: [Food]
     
-    init(allergies: [Food]){
+    init(allergies: [Food], consumptionClassification: ConsumptionClassification = .omnivore){
         self.allergies = allergies
-        super.init()
+        super.init(consumptionClassification: consumptionClassification)
     }
     
-    override func consume(food: Food) {
-        guard let health = ConsumptionClassification.canEat(food: food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth else { return }
+    convenience init(vegetarian: Bool)
+    {
+        guard vegetarian else{self.init(allergies: []); return }
+        self.init(allergies: [.chicken], consumptionClassification: .herbivore)
+    }
+    override func consume(_ food: Food) {
+        guard let health = consumptionClassification.canEat(food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth else { return }
         
         self.health = health
     }
@@ -94,14 +103,12 @@ class Human: Mammal {
 
 let amanda = Human(allergies: [.chocolate])
 for _ in 0..<3 {
-    amanda.consume(food: .chocolate)
+    amanda.consume(.chocolate)
 }
 amanda.health
 
 //: 3.) Create a human named debbie that is allergic to chicken and change her consumption classification to herbivore
-
-//: 4.) Change the consume(food:) function to consume(_ food:) so it's easier to read and write.
-
+let debbie = Human(allergies: [.chicken], consumptionClassification: .herbivore)
 
 //: 5.) Write an initializer on 'Child' that takes in the parameters 'dislikedFoods', a `Food` array, and 'vegetarian', a `Bool`.
 //:  - - Notice you cannot call the convenience initializer of the superclass. You must call a designated initializer of the superclass 'Human'
@@ -116,17 +123,33 @@ class Child: Human {
         self.dislikedFoods = dislikedFoods
         super.init(allergies: allergies)
     }
+    init (dislikedFoods: [Food], vegetarian: Bool)
+    {
+        self.dislikedFoods = dislikedFoods
+        super.init(allergies: [.chicken], consumptionClassification: .herbivore)
+    }
+    init?(dislikedFoods: [Food], allergies: [Food], consumptionClassification: ConsumptionClassification)
+    {
+        let badFoods = Set(dislikedFoods).union(Set(allergies))
+        let allFoods = Set(Food.allCases)
+        let edibleFoods = allFoods.subtracting(badFoods)
+        guard !edibleFoods.isEmpty else {
+            return nil
+        }
+        self.dislikedFoods = dislikedFoods
+        super.init(allergies: allergies, consumptionClassification: consumptionClassification)
+    }
     
-    override func consume(food: Food) {
+    override func consume(_ food: Food) {
         guard !dislikedFoods.contains(food) else { print("NO!"); return }
         
-        super.consume(food: food)
+        super.consume(food)
     }
 }
 
 let tommy = Child(dislikedFoods: [.lettuce], allergies: [])
 tommy.health
-tommy.consume(food: .lettuce)
+tommy.consume(.lettuce)
 
 //: ## Deinitialization
 //: We'll cover automatic reference counting next week and deinitialization in more detail with ARC and when we work with views in the coming weeks.
