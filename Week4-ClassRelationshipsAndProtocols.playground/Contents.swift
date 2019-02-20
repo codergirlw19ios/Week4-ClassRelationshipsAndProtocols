@@ -33,4 +33,10 @@ struct SimpleStructure: ExampleProtocol {
 //: 2.) Write an extension for the Double type that adds an absoluteValue property.
 //:
 //:  ( an absolute value is a the magnitude of a real number without regard to its sign.)
-
+extension Double {
+    var absoluteValue : Double {
+        return abs(self)
+    }
+}
+var someDouble = -3.55
+print(someDouble.absoluteValue)
