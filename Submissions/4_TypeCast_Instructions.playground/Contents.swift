@@ -95,7 +95,7 @@ class Human: Mammal {
     
     override func consume(_ food: Food) {
         guard let health = consumptionClassification.canEat(food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth else { return }
-        
+        print("Setting health to \(health)")
         self.health = health
     }
     
@@ -185,7 +185,8 @@ hayden[.sibling].count
 
 //: 1.) Create a constant called `children` and set it equal to `abby`'s `.child` subscript.
 //: - Print the result of passing `children` to the `type(of:)` function.
-
+let children = abby[.child]
+print(type(of: children))
 
 //: Add a print statement to each the `Human` and `Child` class's consume function.
 
@@ -198,3 +199,11 @@ hayden[.sibling].count
 //: - Try casting `child` to an `Adult`
 //: - Try force casting and running the playground.
 //: - Try optionally casting to an `Adult`.
+
+if let child = children.first {
+    child is Child
+    child is Adult
+    child.consume(.chocolate)
+    child as? Adult
+    child as! Child
+}
