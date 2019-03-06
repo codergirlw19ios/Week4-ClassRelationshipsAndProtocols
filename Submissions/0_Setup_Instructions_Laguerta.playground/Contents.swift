@@ -10,6 +10,19 @@ enum ConsumptionClassification {
 //: - - Challenge: This can be achieved by returning a single ternary statement.
 enum Food {
     case chicken, chocolate, pizza, burger
+    
+    var consumptionType: ConsumptionClassification {
+        switch self {
+        case .chicken:
+            return .carnivore
+        case .chocolate:
+            return .herbivore
+        case .pizza:
+            return .herbivore
+        case .burger:
+            return .carnivore
+        }
+    }
 }
 //:  3.) Write one more enum called `Health` and give it the following cases: `dead`, `ill`, `poor`, `well`, `healthy`.
 //: - Write two computed variables on `Health`. One called `decreasedHealth`, one called `increasedHealth`. Return an optional `Health` enum type if it is possible to decrease or increase in health status beyond the current state. (for instance, if the current state is `ill`, in `decreaseHealth` return `.dead`, in `increaseHealth` return `.poor`. You cannot increase health from `.dead`.)
