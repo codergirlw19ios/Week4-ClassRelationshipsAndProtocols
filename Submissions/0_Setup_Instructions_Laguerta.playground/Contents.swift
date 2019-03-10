@@ -38,4 +38,19 @@ enum Food {
 //: - Write two computed variables on `Health`. One called `decreasedHealth`, one called `increasedHealth`. Return an optional `Health` enum type if it is possible to decrease or increase in health status beyond the current state. (for instance, if the current state is `ill`, in `decreaseHealth` return `.dead`, in `increaseHealth` return `.poor`. You cannot increase health from `.dead`.)
 enum Health {
     case dead, ill, poor, well, healthy
+    
+    var decreasedHealth: Health? {
+        switch self {
+        case .dead:
+            return nil
+        case .ill:
+            return .dead
+        case .poor:
+            return .ill
+        case .well:
+            return .poor
+        case .healthy:
+            return .well
+        }
+    }
 }
