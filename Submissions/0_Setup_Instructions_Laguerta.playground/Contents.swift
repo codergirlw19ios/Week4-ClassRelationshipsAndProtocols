@@ -3,6 +3,9 @@ import UIKit
 //: 1.)  Write an enum called `ConsumptionClassification` with three cases: `omnivore`, `carnivore`, `herbivore`.
 enum ConsumptionClassification {
     case omnivore, carnivore, herbivore
+    
+    func canEat(food: Food) -> Bool {return (((self == .omnivore && food.consumptionType == .carnivore ) || (self == .omnivore && food.consumptionType == .herbivore) || (self == food.consumptionType)) ? true: false )
+    }
 }
 //: 2.) Write an enum called `Food` with at least two cases, such as `chicken` and `chocolate`
 //: - Write a computed variable called `consumptionType` on the `Food` enum that returns a `ConsumptionClassification` type for each food type appropriate to the food. Use `.herbivore` or `.carnivore` instead of `.omnivore`. Use a switch statement that takes `self` as a parameter to switch over the cases of the enum.
