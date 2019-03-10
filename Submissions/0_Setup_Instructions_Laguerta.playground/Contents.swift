@@ -53,4 +53,19 @@ enum Health {
             return .well
         }
     }
+    
+    var increasedHealth: Health? {
+        switch self {
+        case .dead:
+            return nil
+        case .ill:
+            return .poor
+        case .poor:
+            return .well
+        case .well:
+            return .healthy
+        case .healthy:
+            return nil
+        }
+    }
 }
