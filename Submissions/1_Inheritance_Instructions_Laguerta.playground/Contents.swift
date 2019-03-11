@@ -101,6 +101,13 @@ class Human: Mammal {
         self.health = health
     }
     
+    override var health: Health {
+        didSet {
+            if health == .ill {
+                 print("You should see a doctor!")
+            }
+        }
+    }
 }
 //: 4.) Now create an instance of a `Human` in a constant named `amanda` and make her allergic to chocolate. Then force feed her chocolate three times. Use a for loop instead of duplicating code. You should see your advice print to the console. Examine amanda's `health` and you will see confirmation that the health status is `.ill`.
 
