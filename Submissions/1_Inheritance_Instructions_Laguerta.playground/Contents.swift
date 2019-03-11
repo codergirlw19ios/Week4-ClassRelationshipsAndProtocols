@@ -10,12 +10,13 @@ enum ConsumptionClassification {
 
 //: - add `.lettuce` as an case to `Food`
 enum Food {
-    case chicken, chocolate
+    case chicken, chocolate, lettuce
     
     var consumptionType: ConsumptionClassification {
         switch self {
         case .chicken: return .carnivore
         case .chocolate: return .herbivore
+        case .lettuce: return .herbivore
         }
     }
 }
@@ -49,6 +50,26 @@ enum Health {
 //: - Create a stored variable for `Health` with a default value of .healthy
 //:  - Write a function called `consume` which takes a parameter of `Food`. Inside this function, if the `consumptionClassification` `canEat` function returns a boolean value of `true`, call the `increaseHealth` property on the stored `Health` variable. If the `canEat` function returns a `false` value, call the `decreaseHealth` property. If the return value is not nil, set the `Health` variable to the new value.
 //: - - Challenge: See if you can write this with a combination of a guard statement and a ternary :D instead of an if else statement.
+class Mammal {
+    var consumptionClass: ConsumptionClassification = .omnivore
+    var health: Health = .healthy
+    
+    func consume(food: Food) -> Health? {
+        if consumptionClass.canEat(food: food) {
+            return health.increasedHealth
+        } else {
+            return health.decreasedHealth
+        }
+    }
+    
+//    func consume(food: Food) { (consumptionClass.canEat(food: food) ? health.increasedHealth : health.decreasedHealth)
+//        }
+    
+}
+
+var testMammal = Mammal()
+testMammal.health = .poor
+testMammal.consume(food: .chocolate)
 
 //: 2.) initialize an instance of mammal to a constant called animal and explore the various properties and the function you have created.
 
