@@ -86,7 +86,15 @@ animal.consume(food: .lettuce)
 //: - Override the `consume` function so that if the `Food` is in the `allergies` array, the `decreaseHealth` property on `health` is called. You can expand the previous solution easily.
 //: - Override the `health` variable and write a property listener for `didSet` that will print, if the case is `.ill`, stating that "You should see a doctor!"
 //: - Prevent the `health` variable from being overridden using the `final` modifier.
-
+class Human: Mammal {
+    var allergies: [Food]
+    
+    init(allergies: [Food]) {
+        self.allergies = allergies
+        super.init()
+        
+    }
+}
 //: 4.) Now create an instance of a `Human` in a constant named `amanda` and make her allergic to chocolate. Then force feed her chocolate three times. Use a for loop instead of duplicating code. You should see your advice print to the console. Examine amanda's `health` and you will see confirmation that the health status is `.ill`.
 
 //: 5.) Create subclass of `Human` called `Child`.
