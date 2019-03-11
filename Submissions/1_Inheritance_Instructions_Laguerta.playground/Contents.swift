@@ -101,7 +101,7 @@ class Human: Mammal {
         self.health = health
     }
     
-    override var health: Health {
+    final override var health: Health {
         didSet {
             if health == .ill {
                  print("You should see a doctor!")
