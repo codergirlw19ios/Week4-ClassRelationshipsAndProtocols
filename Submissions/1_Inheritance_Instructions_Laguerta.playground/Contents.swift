@@ -64,10 +64,10 @@ class Mammal {
     
     //the challenge
     func consume(food: Food) {
-        guard let newHealth = (consumptionClassification.canEat(food: food) ? health.increasedHealth : health.decreasedHealth) else {
+        guard let health = (consumptionClassification.canEat(food: food) ? health.increasedHealth : health.decreasedHealth) else {
             return
         }
-        self.health = newHealth
+        self.health = health //to be more swifty, change newHealth to health
     }
 }
 
@@ -76,7 +76,9 @@ testMammal.health = .poor
 testMammal.consume(food: .chocolate)
 
 //: 2.) initialize an instance of mammal to a constant called animal and explore the various properties and the function you have created.
-
+let animal = Mammal()
+animal.consumptionClassification = .carnivore
+animal.consume(food: .lettuce)
 //: 3.) Write a class called `Human` that subclasses `Mammal`.
 //: - Write a stored variable called `allergies` that is an array of `Food`.
 //: - Write an initializer that allows you to initialize an instance of `Human` and pass in an array of `Food` for an `allergies` parameter.
