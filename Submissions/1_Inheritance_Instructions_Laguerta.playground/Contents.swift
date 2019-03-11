@@ -133,14 +133,24 @@ class Child: Human {
     }
     
     //override var health
-    
+//this doesn't work because you need to return the print staement
+//    override func consume(food: Food) {
+//       guard let health = dislikedFoods.contains(food) ? health : (consumptionClassification.canEat(food: food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth) else {
+//            return
+//        }
+//        self.health = health
+//    }
     override func consume(food: Food) {
-       guard let health = dislikedFoods.contains(food) ? health : (consumptionClassification.canEat(food: food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth) else {
-            return
+        guard !dislikedFoods.contains(food) else {
+            print("NO!"); return
         }
-        self.health = health
+    
+        super.consume(food: food)
     }
+    
 }
 
 //: 6.) Create an instance of the `Child` class called `tommy` and pass an empty array for `allergies` and give a `dislikedFoods` of `.lettuce`.
 //: - Feed tommy `.lettuce`
+let tommy = Child(dislikedFoods: [.lettuce], allergies: [])
+tommy.consume(food: .lettuce)
