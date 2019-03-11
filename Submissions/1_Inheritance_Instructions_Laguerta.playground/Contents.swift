@@ -110,6 +110,11 @@ class Human: Mammal {
     }
 }
 //: 4.) Now create an instance of a `Human` in a constant named `amanda` and make her allergic to chocolate. Then force feed her chocolate three times. Use a for loop instead of duplicating code. You should see your advice print to the console. Examine amanda's `health` and you will see confirmation that the health status is `.ill`.
+let amanda = Human(allergies: [.chocolate])
+for _ in 1...3 {
+    amanda.consume(food: .chocolate)
+}
+amanda.health
 
 //: 5.) Create subclass of `Human` called `Child`.
 //: - Add a stored variable called `dislikedFoods` that holds an array of `Food`.
