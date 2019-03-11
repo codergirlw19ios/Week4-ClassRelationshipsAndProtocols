@@ -131,6 +131,15 @@ class Child: Human {
         self.dislikedFoods = dislikedFoods
         super.init(allergies: allergies)
     }
+    
+    //override var health
+    
+    override func consume(food: Food) {
+       guard let health = dislikedFoods.contains(food) ? health : (consumptionClassification.canEat(food: food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth) else {
+            return
+        }
+        self.health = health
+    }
 }
 
 //: 6.) Create an instance of the `Child` class called `tommy` and pass an empty array for `allergies` and give a `dislikedFoods` of `.lettuce`.
