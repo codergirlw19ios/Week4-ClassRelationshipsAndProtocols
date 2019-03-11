@@ -124,7 +124,14 @@ amanda.health
 //: - Attempt to override the `health` variable from the `Human` superclass.
 //: Override the `consume` class and ignore `dislikedFoods`. Do not change `health` if that food is passed to the `consume` function. Print "NO!" instead.
 //: Prevent `Child` class from being subclassed using the `final` modifier.
-
+class Child: Human {
+    var dislikedFoods: [Food]
+    
+    init(dislikedFoods: [Food], allergies: [Food]) {
+        self.dislikedFoods = dislikedFoods
+        super.init(allergies: allergies)
+    }
+}
 
 //: 6.) Create an instance of the `Child` class called `tommy` and pass an empty array for `allergies` and give a `dislikedFoods` of `.lettuce`.
 //: - Feed tommy `.lettuce`
