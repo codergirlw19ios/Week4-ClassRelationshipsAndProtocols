@@ -92,8 +92,15 @@ class Human: Mammal {
     init(allergies: [Food]) {
         self.allergies = allergies
         super.init()
-        
     }
+    
+    override func consume(food: Food) {
+        guard let health = (consumptionClassification.canEat(food: food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth) else {
+            return
+        }
+        self.health = health
+    }
+    
 }
 //: 4.) Now create an instance of a `Human` in a constant named `amanda` and make her allergic to chocolate. Then force feed her chocolate three times. Use a for loop instead of duplicating code. You should see your advice print to the console. Examine amanda's `health` and you will see confirmation that the health status is `.ill`.
 
