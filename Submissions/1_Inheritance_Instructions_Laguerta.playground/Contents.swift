@@ -51,20 +51,24 @@ enum Health {
 //:  - Write a function called `consume` which takes a parameter of `Food`. Inside this function, if the `consumptionClassification` `canEat` function returns a boolean value of `true`, call the `increaseHealth` property on the stored `Health` variable. If the `canEat` function returns a `false` value, call the `decreaseHealth` property. If the return value is not nil, set the `Health` variable to the new value.
 //: - - Challenge: See if you can write this with a combination of a guard statement and a ternary :D instead of an if else statement.
 class Mammal {
-    var consumptionClass: ConsumptionClassification = .omnivore
+    var consumptionClassification: ConsumptionClassification = .omnivore
     var health: Health = .healthy
     
-    func consume(food: Food) -> Health? {
-        if consumptionClass.canEat(food: food) {
-            return health.increasedHealth
-        } else {
-            return health.decreasedHealth
-        }
-    }
-    
-//    func consume(food: Food) { (consumptionClass.canEat(food: food) ? health.increasedHealth : health.decreasedHealth)
+//    func consume(food: Food) -> Health? {
+//        if consumptionClass.canEat(food: food) {
+//            return health.increasedHealth
+//        } else {
+//            return health.decreasedHealth
 //        }
+//    }
     
+    //the challenge
+    func consume(food: Food) {
+        guard let newHealth = (consumptionClassification.canEat(food: food) ? health.increasedHealth : health.decreasedHealth) else {
+            return
+        }
+        self.health = newHealth
+    }
 }
 
 var testMammal = Mammal()
