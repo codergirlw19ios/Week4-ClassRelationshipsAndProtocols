@@ -129,7 +129,7 @@ let debbie = Human(allergies: [.chicken], consumptionClassification: .herbivore)
 let sarah = Human(vegetarian: true)
 
 //: 3.) Create a subclass of `Human` called `Adult` that cannot be subclassed.
-//: - Create a function called `addChild` that will initialize a `Child` instance with no `dislikedFoods` or `allergies`, add the `Child` to the `Adult`'s dictionary as a `.child` and add the `Adult` to the `Child`'s dictionary as a `.parent`. If there are already children, make sure each `.child` is added to each other's dictionary as a `.sibling`.
+//: - Create a function called `addChild` that will initialize a `Child` instance with no `dislikedFoods` or `allergies`, add the `Child` to the `Adult`'s dictionary as a `.child` and add the `Adult` to the `Child`'s dictionary as a `.parent`. If there are already children, make sure each `.child` is added to each other's dictionary as a `.sibling`. Return child.
 final class Adult: Human {
     func addChild() -> Child {
         let child =  Child.init(dislikedFoods: [], allergies: [])
@@ -189,10 +189,12 @@ tommy.health
 tommy.consume(.lettuce)
 
 
-//: 4.) Create a Human named `abby`
+//: 4.) Create an `Adult` named `abby`
 //: - Give her a Child named `hayden`
 //: - Check that `abby`'s first `.child`'s first `.parent` is deeply equal to `abby`. (they are the same object in memory)
-
+let abby = Adult(allergies: [])
+let hayden = abby.addChild()
+abby[.child].first?[.parent].first === abby
 
 //: 5.) give abby another child named `vivian`
 //: - Check that abby now has two children and `hayden` now has a `.sibling`
