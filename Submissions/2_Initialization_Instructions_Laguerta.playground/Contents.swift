@@ -133,6 +133,11 @@ class Child: Human {
         super.init(allergies: allergies)
     }
     
+    init(dislikedFoods: [Food], vegetarian: Bool){
+        self.dislikedFoods = dislikedFoods
+        super.init(allergies: [.chicken], consumptionClassification: .herbivore)
+    }
+    
     override func consume(_ food: Food) {
         guard !dislikedFoods.contains(food) else { print("NO!"); return }
         
