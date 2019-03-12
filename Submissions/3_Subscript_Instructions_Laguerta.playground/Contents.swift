@@ -130,7 +130,27 @@ let sarah = Human(vegetarian: true)
 
 //: 3.) Create a subclass of `Human` called `Adult` that cannot be subclassed.
 //: - Create a function called `addChild` that will initialize a `Child` instance with no `dislikedFoods` or `allergies`, add the `Child` to the `Adult`'s dictionary as a `.child` and add the `Adult` to the `Child`'s dictionary as a `.parent`. If there are already children, make sure each `.child` is added to each other's dictionary as a `.sibling`.
-
+final class Adult: Human {
+    func addChild() -> Child {
+        let child =  Child.init(dislikedFoods: [], allergies: [])
+        
+        //for each child of the Adult, make the new child a sibling
+        self[.child].forEach { sibling in
+            sibling[.sibling] = [child]
+        }
+        
+        //Add the adult's already existing children as siblings of the child
+        child[.sibling] = self[.child]
+        
+        //Add child to the Adult's dictionary as .child
+        self[.child] = [child]
+        
+        //Add Adult to Child's dictionary as .parent
+        child[.parent] = [self]
+        
+        return child
+    }
+}
 
 class Child: Human {
     var dislikedFoods: [Food]
