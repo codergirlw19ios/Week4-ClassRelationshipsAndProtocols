@@ -198,5 +198,7 @@ abby[.child].first?[.parent].first === abby
 
 //: 5.) give abby another child named `vivian`
 //: - Check that abby now has two children and `hayden` now has a `.sibling`
-
+let vivian = abby.addChild()
+abby[.child].count
+hayden[.sibling].count
 
