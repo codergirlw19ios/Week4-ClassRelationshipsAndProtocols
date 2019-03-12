@@ -137,7 +137,7 @@ class Child: Human {
         self.dislikedFoods = dislikedFoods
         super.init(allergies: [.chicken], consumptionClassification: .herbivore)
     }
-    
+ /* my attempt
     init?(dislikedFoods: [Food], allergies: [Food], consumptionClassification: ConsumptionClassification){
         let inedibleFoods: [Food] = dislikedFoods + allergies
         if inedibleFoods  == Food.allCases {
@@ -146,6 +146,20 @@ class Child: Human {
             self.dislikedFoods = dislikedFoods
             super.init(allergies: allergies, consumptionClassification: consumptionClassification)
         }
+    }
+*/
+    //from video
+    init?(dislikedFoods: [Food], allergies: [Food], consumptionClassification: ConsumptionClassification){
+        let inedibleFoods = Set(dislikedFoods).union(Set(allergies))
+        let allFoods = Set(Food.allCases)
+        
+        //.subtracting returns a new set, substract returns a mutated set
+        let edibleFoods = allFoods.subtracting(inedibleFoods)
+
+        guard !edibleFoods.isEmpty else {return nil}
+        
+            self.dislikedFoods = dislikedFoods
+            super.init(allergies: allergies, consumptionClassification: consumptionClassification)
     }
     
     override func consume(_ food: Food) {
