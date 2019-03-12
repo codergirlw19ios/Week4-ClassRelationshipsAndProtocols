@@ -114,7 +114,8 @@ for _ in 0..<3 {
 amanda.health
 
 //: 3.) Create a human named debbie that is allergic to chicken and change her consumption classification to herbivore
-
+var debbie = Human(allergies: [.chicken], consumptionClassification: .herbivore)
+var vegetarianDebbie = Human(vegetarian: true)
 //: 4.) Change the consume(food:) function to consume(_ food:) so it's easier to read and write.
 
 
