@@ -76,6 +76,18 @@ animal.consume(.chicken)
 class Human: Mammal {
     var allergies: [Food]
     
+    private var family = [FamilyMember : [Human]]()
+    
+    subscript(familyMember: FamilyMember) -> [Human] {
+        get {
+            return family[FamilyMember] ?? []
+        }
+        
+        set (newFamily) {
+            
+        }
+    }
+    
     init(allergies: [Food], consumptionClassification: ConsumptionClassification = .omnivore){
         self.allergies = allergies
         super.init(consumptionClassification: consumptionClassification)
