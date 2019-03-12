@@ -3,7 +3,7 @@ import UIKit
 enum ConsumptionClassification {
     case omnivore, carnivore, herbivore
     
-    func canEat(food: Food) -> Bool {
+    func canEat(_ food: Food) -> Bool {
         return self == .omnivore ? true : food.consumptionType == self
     }
 }
@@ -51,8 +51,8 @@ class Mammal {
         self.consumptionClassification = consumptionClassification
     }
     
-    func consume(food: Food) {
-        guard let health = consumptionClassification.canEat(food: food) ? health.increasedHealth : health.decreasedHealth else { return }
+    func consume(_ food: Food) {
+        guard let health = consumptionClassification.canEat(food) ? health.increasedHealth : health.decreasedHealth else { return }
         
         self.health = health
     }
@@ -61,7 +61,7 @@ class Mammal {
 let animal = Mammal()
 animal.consumptionClassification
 animal.health
-animal.consume(food: .chicken)
+animal.consume(.chicken)
 
 //: ## Initialization
 //: 1.) Expand the `Human` class:
@@ -92,8 +92,8 @@ class Human: Mammal {
         }
     }
     
-    override func consume(food: Food) {
-        guard let health = consumptionClassification.canEat(food: food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth else { return }
+    override func consume(_ food: Food) {
+        guard let health = consumptionClassification.canEat(food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth else { return }
         
         self.health = health
     }
@@ -109,7 +109,7 @@ class Human: Mammal {
 
 let amanda = Human(allergies: [.chocolate])
 for _ in 0..<3 {
-    amanda.consume(food: .chocolate)
+    amanda.consume(.chocolate)
 }
 amanda.health
 
@@ -133,16 +133,16 @@ class Child: Human {
         super.init(allergies: allergies)
     }
     
-    override func consume(food: Food) {
+    override func consume(_ food: Food) {
         guard !dislikedFoods.contains(food) else { print("NO!"); return }
         
-        super.consume(food: food)
+        super.consume(food)
     }
 }
 
 let tommy = Child(dislikedFoods: [.lettuce], allergies: [])
 tommy.health
-tommy.consume(food: .lettuce)
+tommy.consume(.lettuce)
 
 //: ## Deinitialization
 //: We'll cover automatic reference counting next week and deinitialization in more detail with ARC and when we work with views in the coming weeks.
