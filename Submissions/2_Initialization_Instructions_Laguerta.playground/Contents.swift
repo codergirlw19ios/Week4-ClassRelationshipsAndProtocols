@@ -44,8 +44,12 @@ enum Health {
 }
 
 class Mammal {
-    var consumptionClassification: ConsumptionClassification = .omnivore
+    let consumptionClassification: ConsumptionClassification
     var health: Health = .healthy
+    
+    init(consumptionClassification: ConsumptionClassification = .omnivore){
+        self.consumptionClassification = consumptionClassification
+    }
     
     func consume(food: Food) {
         guard let health = consumptionClassification.canEat(food: food) ? health.increasedHealth : health.decreasedHealth else { return }
@@ -74,8 +78,7 @@ class Human: Mammal {
     
     init(allergies: [Food], consumptionClassification: ConsumptionClassification = .omnivore){
         self.allergies = allergies
-        super.init()
-        self.consumptionClassification = consumptionClassification
+        super.init(consumptionClassification: consumptionClassification)
        
     }
     
