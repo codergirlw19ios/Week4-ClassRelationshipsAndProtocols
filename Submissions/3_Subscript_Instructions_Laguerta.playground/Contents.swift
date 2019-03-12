@@ -45,6 +45,10 @@ enum Health {
 
 //: ## SUBSCRIPT
 //: 1.) Write an enum called `FamilyMember` with a few family members as cases: such as `parent`, `child`, `sibling`
+enum FamilyMember {
+    case parent, child, sibling
+}
+
 
 class Mammal {
     let consumptionClassification: ConsumptionClassification
