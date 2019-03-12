@@ -8,7 +8,7 @@ enum ConsumptionClassification {
     }
 }
 
-enum Food {
+enum Food: CaseIterable {
     case chicken, chocolate, lettuce
     
     var consumptionType: ConsumptionClassification {
@@ -136,6 +136,16 @@ class Child: Human {
     init(dislikedFoods: [Food], vegetarian: Bool){
         self.dislikedFoods = dislikedFoods
         super.init(allergies: [.chicken], consumptionClassification: .herbivore)
+    }
+    
+    init?(dislikedFoods: [Food], allergies: [Food], consumptionClassification: ConsumptionClassification){
+        let inedibleFoods: [Food] = dislikedFoods + allergies
+        if inedibleFoods  == Food.allCases {
+            return nil
+        } else {
+            self.dislikedFoods = dislikedFoods
+            super.init(allergies: allergies, consumptionClassification: consumptionClassification)
+        }
     }
     
     override func consume(_ food: Food) {
