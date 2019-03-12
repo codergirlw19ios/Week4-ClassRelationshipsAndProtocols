@@ -82,6 +82,16 @@ class Human: Mammal {
        
     }
     
+    convenience init(vegetarian: Bool){
+        if vegetarian {
+            self.init(allergies: [.chicken], consumptionClassification: .herbivore)
+            return
+        } else {
+            self.init(allergies: [])
+            return
+        }
+    }
+    
     override func consume(food: Food) {
         guard let health = consumptionClassification.canEat(food: food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth else { return }
         
