@@ -76,15 +76,19 @@ animal.consume(.chicken)
 class Human: Mammal {
     var allergies: [Food]
     
-    private var family = [FamilyMember : [Human]]()
+    private var family = [FamilyMember: [Human]]()
     
-    subscript(familyMember: FamilyMember) -> [Human] {
+    subscript(_ familyMember: FamilyMember) -> [Human] {
         get {
-            return family[FamilyMember] ?? []
+            return family[familyMember] ?? []
         }
         
         set (newFamily) {
-            
+            if let currentFamily = family[familyMember] {
+                family[familyMember] = currentFamily + newFamily
+            } else {
+                family[familyMember] = newFamily
+            }
         }
     }
     
