@@ -260,3 +260,6 @@ extension Int {
 let char = "12"
 let int = Int(char)
 //: 4.) Write an extension on the `Dog` class that has a computed variable of an optional `Human` type named `bestFriend`. The return value is the `owner`'s first `.child`.
+extension Dog {
+    var bestFriend: Human? {return owner[.child].first as? Human}
+}
