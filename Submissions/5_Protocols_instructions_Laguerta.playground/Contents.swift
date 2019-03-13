@@ -77,7 +77,11 @@ animal.consume(.chicken)
 //: - Write a function called `beg` that takes no parameters and returns no parameters.
 //: - Write a function called `consume` that takes a `Food` parameter with no argument label.
 //: - Write a read-only `Human` type var called `owner`.
-
+protocol Pet: AnyObject {
+    func beg()
+    func consume(_ food: Food)
+    var owner: Human { get }
+}
 
 //: 5.) Write a subclass of `Mammal` called `Dog`, that adheres to the `Pet` protocol
 //: - Write an initializer that takes in an `owner` parameter.
