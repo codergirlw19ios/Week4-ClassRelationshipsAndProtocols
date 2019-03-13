@@ -3,12 +3,14 @@ import UIKit
 //:
 protocol ExampleProtocol {
     var simpleDescription: String { get }
+    var isAClass: Bool { get }
     mutating func adjust()
 }
 
 class SimpleClass: ExampleProtocol {
     var simpleDescription: String = "A very simple class."
     var anotherProperty: Int = 69105
+    var isAClass: Bool = true
     func adjust() {
         simpleDescription += "  Now 100% adjusted."
     }
@@ -17,6 +19,7 @@ class SimpleClass: ExampleProtocol {
 
 struct SimpleStructure: ExampleProtocol {
     var simpleDescription: String = "A simple structure"
+    var isAClass: Bool = false
     mutating func adjust() {
         simpleDescription += " (adjusted)"
     }
