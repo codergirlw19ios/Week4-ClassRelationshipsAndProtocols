@@ -188,8 +188,8 @@ hayden[.sibling].count
 
 //: 1.) Create a constant called `children` and set it equal to `abby`'s `.child` subscript.
 //: - Print the result of passing `children` to the `type(of:)` function.
-
-
+let children = abby[.child]
+print(type(of:children))
 //: Add a print statement to each the `Human` and `Child` class's consume function.
 
 //: 2.) Write a if let statement to unwrap children.first into a child constant.
