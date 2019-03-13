@@ -159,7 +159,10 @@ class Human: Mammal {
     }
     
     func feedPet(_ pet: Pet) {
-        //
+        switch (pet)  {
+        case let dog where dog is Dog: pet.consume(.kibble)
+        default: pet.consume(.chocolate)
+        }
     }
 }
 
