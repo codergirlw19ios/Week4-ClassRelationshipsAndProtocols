@@ -24,7 +24,7 @@ enum Food: CaseIterable {
 }
 
 //: 2.) change the enum to be of type `Int`
-enum Health {
+enum Health: Int {
     case dead, ill, poor, well, healthy
     
     var decreasedHealth: Health? {
