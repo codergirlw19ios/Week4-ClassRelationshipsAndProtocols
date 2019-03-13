@@ -77,10 +77,10 @@ animal.consume(.chicken)
 //: - Write a function called `beg` that takes no parameters and returns no parameters.
 //: - Write a function called `consume` that takes a `Food` parameter with no argument label.
 //: - Write a read-only `Human` type var called `owner`.
-protocol Pet: AnyObject {
+protocol Pet: class {
+    var owner: Human { get }
     func beg()
     func consume(_ food: Food)
-    var owner: Human { get }
 }
 
 //: 5.) Write a subclass of `Mammal` called `Dog`, that adheres to the `Pet` protocol
@@ -88,7 +88,31 @@ protocol Pet: AnyObject {
 //: - Write the `beg` function that calls a `feedPet` function on the `owner`. the `feedPet` takes a `Pet` parameter with no argument label, so pass `self`.
 //: - Override the `health` variable to call `beg` in the `didSet` propertyObserver when `health` is less than `healthy` (except for .dead!)
 //: - Override the `consume` function to be able to eat anything (`increaseHealth`) except .chocolate (`decreaseHealth`).
+class Dog: Mammal, Pet {
+    var owner: Human
+    init(owner: Human) {
+        self.owner = owner
+    }
+    
+    func beg() {
+        owner.feedPet(self)
+    }
+    
+    override var health: Health {
+        didSet {
+            if health != .dead && health.rawValue < Health.healthy.rawValue {
+                beg()
+            }
+        }
+    }
+    
+    override func consume(_ food: Food) {
+        guard let health = consumptionClassification.canEat(food) && food != .chocolate ? health.increasedHealth : health.decreasedHealth else { return }
 
+        self.health = health
+    }
+    
+}
 
 //: 6.) Write a function called `feedPet` that takes a `Pet` parameter with no external argument label.
 //: - Switch on `pet`. Typecast `pet` to `Dog` in a case; if it is a `Dog`, feed it `.kibble`. Otherwise feed the `pet` `.chocolate`.
@@ -132,6 +156,10 @@ class Human: Mammal {
                 print("You should see a doctor!")
             }
         }
+    }
+    
+    func feedPet(_ pet: Pet) {
+        //
     }
 }
 
