@@ -94,6 +94,8 @@ class Human: Mammal {
     }
     
     override func consume(_ food: Food) {
+        print("Human wants to consume \(food)")
+        
         guard let health = consumptionClassification.canEat(food) && !allergies.contains(food) ? health.increasedHealth : health.decreasedHealth else { return }
         
         self.health = health
@@ -159,6 +161,7 @@ class Child: Human {
     }
     
     override func consume(_ food: Food) {
+        print("Child wants to consume \(food)")
         guard !dislikedFoods.contains(food) else { print("NO!"); return }
         
         super.consume(food)
