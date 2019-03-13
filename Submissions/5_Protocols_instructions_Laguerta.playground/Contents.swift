@@ -11,13 +11,14 @@ enum ConsumptionClassification {
 //: ## PROTOCOLS
 //: 1.) add `kibble` as a case
 enum Food: CaseIterable {
-    case chicken, chocolate, lettuce
+    case chicken, chocolate, lettuce, kibble
     
     var consumptionType: ConsumptionClassification {
         switch self {
         case .chicken: return .carnivore
         case .chocolate: return .herbivore
         case .lettuce: return .herbivore
+        case .kibble: return .carnivore
         }
     }
 }
