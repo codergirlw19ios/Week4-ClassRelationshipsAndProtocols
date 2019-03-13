@@ -49,7 +49,7 @@ enum Health: Int {
 
 //: 3.) add the `pet` case to the enum
 enum FamilyMember {
-    case parent, child, sibling
+    case parent, child, sibling, pet
 }
 
 class Mammal {
