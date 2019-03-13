@@ -256,3 +256,5 @@ if let child = children.first {
 
 //: 8.) Create a constant named `dog` and let `abby` adopt a dog.
 //: - Set the `dog`'s `health` to `.well`
+let dog = abby.adoptDog()
+dog.health = .well
