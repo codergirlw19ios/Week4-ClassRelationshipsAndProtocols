@@ -56,6 +56,16 @@ class Mammal {
     let consumptionClassification: ConsumptionClassification
     var health: Health = .healthy
     
+    private var family = [FamilyMember: [Mammal]]()
+    
+    subscript(_ familyMember: FamilyMember) -> [Mammal] {
+        get {
+            return family[familyMember] ?? []
+        }
+        set (newFamily){
+            family[familyMember] = family[familyMember] != nil ? family[familyMember]! + newFamily : newFamily
+        }
+    }
     init(consumptionClassification: ConsumptionClassification = .omnivore) {
         self.consumptionClassification = consumptionClassification
     }
@@ -120,17 +130,6 @@ class Dog: Mammal, Pet {
 class Human: Mammal {
     var allergies: [Food]
     
-    private var family = [FamilyMember: [Human]]()
-    
-    subscript(_ familyMember: FamilyMember) -> [Human] {
-        get {
-            return family[familyMember] ?? []
-        }
-        set (newFamily){
-            family[familyMember] = family[familyMember] != nil ? family[familyMember]! + newFamily : newFamily
-        }
-    }
-    
     init(allergies: [Food], consumptionClassification: ConsumptionClassification = .omnivore){
         self.allergies = allergies
         super.init(consumptionClassification: consumptionClassification)
@@ -189,6 +188,12 @@ class Adult: Human {
         self[.child] = [child]
         child[.parent] = [self]
         return child
+    }
+    
+    func adoptDog() -> Dog {
+        let dog = Dog(owner: self)
+        self[.pet] = [dog]
+        return dog
     }
 }
 
