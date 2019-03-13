@@ -195,9 +195,16 @@ print(type(of:children))
 //: 2.) Write a if let statement to unwrap children.first into a child constant.
 //: - Inside the if let statement do the following:
 //: - Try type checking children.first as a Child, and then as an Adult.
-
+if let child = children.first {
+    child is Child
+    child is Adult
 //: - use the consume method and option+click on `child` - observe the class of `child` and the class whose consume method that was called.
-
+child.consume(.chicken)
 //: - Try casting `child` to an `Adult`
 //: - Try force casting and running the playground.
 //: - Try optionally casting to an `Adult`.
+    // child as Adult asks you to force it with as!
+    //child as! Adult passes compile but crashes at execution with a SIG ABORT error
+    //safely fails
+    child as? Adult
+}
