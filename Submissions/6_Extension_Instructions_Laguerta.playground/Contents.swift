@@ -89,15 +89,12 @@ protocol Pet: class {
 //: ## Extensions
 //: 1.) Move the conformance to `Pet` into an `extension`
 //: - Note you cannot have stored properties in extensions
-class Dog: Mammal, Pet {
+class Dog: Mammal {
+    //for Pet protocol
     var owner: Human
     
     init(owner: Human){
         self.owner = owner
-    }
-    
-    func beg() {
-        owner.feedPet(self)
     }
     
     override var health: Health {
@@ -116,6 +113,12 @@ class Dog: Mammal, Pet {
         self.health = health
     }
     
+}
+
+extension Dog: Pet {
+    func beg() {
+        owner.feedPet(self)
+    }
 }
 
 class Human: Mammal {
